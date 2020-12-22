@@ -39,13 +39,13 @@ function moves_from_angle!(r,sides,num_steps::Vector{Int})
 end
 
 # перемещает Робота в заданном направлении до упора и возвращает число сделанных шагов
-function moves!(r,side)
-    num_steps=0
-    while isborder(r,side)==false
-        move!(r,side)
-        num_steps+=1
+function moves!(r,side)#передвигаем робота до границы по направлнию side 
+    num_steps=0#обнуляем счетчик
+    while !isborder(r,side)#пока не граница
+        move!(r,side)#двигаем робота
+        num_steps+=1#обновляем счетчик
     end
-    return num_steps
+    return num_steps#возвращаем количество шагов
 end
 
 # Перемещает Робота в заданном направлении на заданное число шагов

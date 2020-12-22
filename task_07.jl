@@ -1,3 +1,5 @@
+#
+
 function mark_chess!(r::Robot)
     num_vert = moves!(r, Sud)
     num_hor = moves!(r, West)

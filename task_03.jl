@@ -1,44 +1,46 @@
-function mark_field!(r::Robot)
-    num_vert = moves!(r, Sud)
-    num_hor = moves!(r, West)
+#ДАНО: Робот - в произвольной клетке ограниченного прямоугольного поля. Итог: Робот - в исходном положении, и все клетки поля промакированы
+
+function mark_field!(r::Robot)#заполняем поле
+    num_vert = moves!(r, Sud)#двигаемся на юг
+    num_hor = moves!(r, West)#двигаемся на запад
     #УТВ: Робот - в Юго-Западном углу
 
-    putmarkers!(r, Nord)
+    putmarkers!(r, Nord)#ставим маркеры
     #УТВ: Все клетки поля промаркированы
 
-    moves!(r, Sud)
-    moves!(r, West)
-    moves!(r, Nord, num_vert)
-    moves!(r, Ost, num_hor)
+    moves!(r, Sud)#перемешаемся на юг до границы
+    moves!(r, West)#перемещаемся на запад до границы
+    moves!(r, Nord, num_vert)#перемещаемся на север на количество num_vert
+    moves!(r, Ost, num_hor)#перемещаемся на восток на количество num_hor
     #УТВ: Робот - в исходном положении
 end
 
-function moves!(r::Robot,side::HorizonSide)
-    num_steps=0
-    while !isborder(r,side)
-        move!(r,side)
-        num_steps+=1
+function moves!(r::Robot,side::HorizonSide)#передвигаем робота до границы по направлнию side 
+    num_steps=0#обнуляем счетчик
+    while !isborder(r,side)#пока не граница
+        move!(r,side)#двигаем робота
+        num_steps+=1#обновляем счетчик
     end
-    return num_steps
+    return num_steps#возвращаем количество шагов
 end
 
-function moves!(r::Robot,side::HorizonSide,num_steps::Int)
-    for _ in 1:num_steps
-        move!(r,side)
+function moves!(r::Robot,side::HorizonSide,num_steps::Int)# передвигаем робота по стороне side на num_steps
+    for _ in 1:num_steps#цикл от 1 ого до количества шагов
+        move!(r,side)#двигаем робота
     end
 end
 
-function putmarkers!(r::Robot, side::HorizonSide)
-    while !isborder(r,side)
-        putmarker!(r)
-        move!(r,side)
+function putmarkers!(r::Robot, side::HorizonSide)#выставляем маркеры на поле
+    while !isborder(r,side)#пока не граница
+        putmarker!(r)#ставим маркер
+        move!(r,side)#двигаем робота
     end
     
-    putmarker!(r)
-    if !isborder(r,Ost)
-        move!(r,Ost)
-        return putmarkers!(r, inverse(side))
+    putmarker!(r)#ставим маркер
+    if !isborder(r,Ost)#если не граница востока
+        move!(r,Ost)#двигаем на восток
+        return putmarkers!(r, inverse(side))#вызываем рекурентно функцию putmarkers в противоположную сторону
     end
 end
 
-inverse(side::HorizonSide) = HorizonSide(mod(Int(side)+2, 4))
+inverse(side::HorizonSide) = HorizonSide(mod(Int(side)+2, 4))#меняем сторону на противоположную
