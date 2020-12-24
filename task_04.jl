@@ -18,7 +18,7 @@ function mark_rows!(r::Robot)#выделяем ряды
     #УТВ: Робот - в исходном положении
 end
 
-function moves!(r::Robot,side::HorizonSide)#передвигаем робота до границы по направлнию side 
+function moves!(r::Robot,side::HorizonSide)#передвигаем робота до границы по направлнию side
     num_steps=0#обнуляем счетчик
     while !isborder(r,side)#пока не граница
         move!(r,side)#двигаем робота
@@ -28,7 +28,7 @@ function moves!(r::Robot,side::HorizonSide)#передвигаем робота 
 end
 
 function moves!(r::Robot,side::HorizonSide,num_steps::Int)# передвигаем робота по стороне side на num_steps
-    for _ in 1:num_steps#цикл от 1 ого до количества шагов
+    for _ in 1:num_steps#цикл от 1 до количества шагов
         move!(r,side)#двигаем робота
     end
 end
@@ -44,7 +44,7 @@ end
 function putmarkers!(r::Robot, num_marks::Int)#красим поле
     while !isborder(r,Nord)#пока не граница на севере
         put_num_markers!(r, Ost, num_marks)#ставим маркеры на восток
-        
+
         move!(r, Nord)#двигаем робота на север
         moves!(r, West)#двигаем робота на запад
         num_marks -= 1#обновляем счетчик
